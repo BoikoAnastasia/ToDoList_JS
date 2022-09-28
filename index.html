@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="content__list _container">
+            <div class="content__inputs">
+                <input type="text" class="input_task" placeholder="Введите задачу">
+                <button id="btn__add" class="btn">+</button>
+                <select id="select" onchange="changeSelect()">
+                    <option value="active">активные</option>
+                    <option value="completed">завершенные</option>
+                    <option value="delete">удаленные</option>
+                </select>
+            </div>
+            <div class="content__items">
+                <div class="items_active"></div>
+                <div class="items_completed" style="display: none;"></div>
+                <div class="items_delete" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+
+    
+    
+</body>
+
+</html>
