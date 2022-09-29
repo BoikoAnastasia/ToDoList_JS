@@ -23,19 +23,26 @@ html {
 }
 
 .input_task {
-    padding: 6px;
+    padding: 6px 25px;
+}
+
+.input_dop_task {
+    padding: 6px 25px;
 }
 
 #btn__add {
     border: none;
     font-size: 14px;
     font-weight: bold;
-    position: absolute;
-    margin: 1.5px 0px 0px -35px;
+    margin: 1.5px 0px 0px 0px;
+    padding: 8px 15px;
+    background-color: rgb(0, 172, 9);
+    color: #fff;
+    border-radius: 5px;
+
 }
 
-select,
-#btn__add {
+select{
     background-color: rgb(0, 172, 9);
     color: #fff;
     padding: 5px 10px;
@@ -44,8 +51,6 @@ select,
 }
 .alert_out{
     overflow: auto;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 15px;
     border-radius: 4px;
@@ -58,7 +63,16 @@ select,
 .alert {
     padding: 5px;
     position: relative;
-    
+}
+
+.alert_dop{
+    padding: 5px;
+    display: none;
+}
+.divAndBxs_items{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 .bxs_items{
     margin: 0px 0px 0px 20px;
@@ -93,9 +107,7 @@ select,
     margin: 0px 0px 0px 5px;
 }
 
-
-
-
 .alert:hover .bxs_items{
     display: block;
 }
+
