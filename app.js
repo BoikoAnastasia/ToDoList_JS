@@ -7,6 +7,7 @@ const items_delayed = document.querySelector(".items_delayed");
 
 
 const btn_add = document.getElementById('btn__add');
+const btn_save_change = document.querySelector(".btn_save_change");
 
 const btn_check = document.getElementsByClassName("bx-check");
 const btn_trash = document.querySelector(".bxs_trash");
@@ -15,6 +16,7 @@ const btn_time = document.querySelector(".bx-time-five");
 document.addEventListener('keyup', function (e) {
     if (e.keyCode == 13) {
         btn_add.click();
+
     }
 });
 
@@ -51,8 +53,11 @@ function createTask(task, task_dop) {
     bxs_items.className = "bxs_items";
 
     div.className = "alert";
+    div.contentEditable = "true";
     div_out.className = "alert_out";
     div_dop.className = 'alert_dop';
+    // div_dop.contentEditable = "true";
+
     divAndBxs_items.className = "divAndBxs_items";
 
     div_dop.textContent = task_dop
@@ -153,38 +158,122 @@ document.addEventListener("click", (e) => {
         items_delayed.append(target.parentNode.parentNode.parentNode)
         // target.parentNode.remove()
     }
+    // появление и исчезание дополнительной задачи
     if (target.classList.contains("bxs-down-arrow")) {
         target.nextSibling.style.display != "block" ? target.nextSibling.style.display = "block"
             : target.nextSibling.style.display = "none";
     }
-})
+    if (target.classList.contains("alert")) {
+        //изменения при редактировать текст, появление кнопки для сохранения текста
+        task = target.textContent;
+        btn_save_change.style.display = "block";
+    }
+    else {
+        target.contentEditable = "false";
+
+    }
+});
+
+btn_save_change.addEventListener("click", () => {
+    btn_save_change.style.display = "none";
+
+
+});
+
+
+// function foundTaskInLocalStorage(task) {
+//     if (localStorage.getItem("active_tasks") != null) {
+//         let tasks_active = Array.from(JSON.parse(localStorage.getItem("active_tasks")));
+//         tasks_active.forEach(element => {
+//             if (element == task) {
+//                 const task_shange = element;
+//                 console.log(element, "tasks_active")
+//                 return task_shange;
+//             }
+//         });
+//     }
+//     if (localStorage.getItem("delete_tasks") != null) {
+//         let tasks_delete = Array.from(JSON.parse(localStorage.getItem("delete_tasks")));
+//         tasks_delete.forEach(element => {
+//             if (element == task) {
+//                 const task_shange = element;
+//                 console.log(element, "tasks_delete")
+//                 return task_shange;
+//             }
+//         });
+//     }
+//     if (localStorage.getItem("completed_tasks") != null) {
+//         let tasks_completed = Array.from(JSON.parse(localStorage.getItem("completed_tasks")));
+//         tasks_completed.forEach(element => {
+//             if (element == task) {
+//                 const task_shange = element;
+//                 console.log(element, "tasks_completed")
+//                 return task_shange;
+//             }
+//         });
+//     }
+//     if (localStorage.getItem("delayed_tasks") != null) {
+//         let tasks_delayed = Array.from(JSON.parse(localStorage.getItem("delayed_tasks")));
+//         tasks_delayed.forEach(element => {
+//             if (element == task) {
+//                 const task_shange = element;
+//                 console.log(element, "tasks_delayed")
+//                 return task_shange;
+//             }
+//         });
+//     }
+// }
+
 
 function changeSelect() {
     const select = document.getElementById('select');
     value = select.options[select.selectedIndex].value;
+    const btn_trash_all = document.getElementsByClassName("bxs-trash");
+    const btn_time_all = document.getElementsByClassName("bx-time-five");
+    const btn_check_all = document.getElementsByClassName("bx-check");
+    
     switch (value) {
-        case "active":
-            {
-                items_active.style.display = "block";
-                items_completed.style.display = "none";
-                items_delete.style.display = "none";
-                items_delayed.style.display = "none";
-                break;
+        case "active": {
+            items_active.style.display = "block";
+            items_completed.style.display = "none";
+            items_delete.style.display = "none";
+            items_delayed.style.display = "none";
+            
+            for (let i = 0; i < btn_check_all.length; i++) {
+                btn_trash_all[i].style.display = "block";
+                btn_check_all[i].style.display = "block";
+                btn_time_all[i].style.display = "block";
             }
-        case "completed":
-            {
-                items_active.style.display = "none";
-                items_completed.style.display = "block"
-                items_delete.style.display = "none";
-                items_delayed.style.display = "none";
 
-                break;
+            break;
+        }
+        case "completed": {
+            items_active.style.display = "none";
+            items_completed.style.display = "block"
+            items_delete.style.display = "none";
+            items_delayed.style.display = "none";
+            btn_check.disabled = true;
+
+            for (let i = 0; i < btn_check_all.length; i++) {
+                btn_trash_all[i].style.display = "block";
+                btn_check_all[i].style.display = "none";
+                btn_time_all[i].style.display = "block";
             }
+
+            break;
+        }
         case "delete": {
             items_active.style.display = "none";
             items_completed.style.display = "none";
             items_delete.style.display = "block";
             items_delayed.style.display = "none";
+
+            for (let i = 0; i < btn_trash_all.length; i++) {
+                btn_trash_all[i].style.display = "none";
+                btn_time_all[i].style.display = "none";
+                btn_check_all[i].style.display = "none";
+            }
+
             break;
         }
         case "delayed": {
@@ -192,6 +281,12 @@ function changeSelect() {
             items_completed.style.display = "none";
             items_delete.style.display = "none";
             items_delayed.style.display = "block";
+
+            for (let i = 0; i < btn_time_all.length; i++) {
+                btn_time_all[i].style.display = "none";
+                btn_trash_all[i].style.display = "block";
+                btn_check_all[i].style.display = "block";
+            }
             break;
         }
     }

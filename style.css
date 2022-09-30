@@ -42,14 +42,16 @@ html {
 
 }
 
-select{
+
+select {
     background-color: rgb(0, 172, 9);
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
     z-index: 10;
 }
-.alert_out{
+
+.alert_out {
     overflow: auto;
     align-items: center;
     padding: 15px;
@@ -65,20 +67,24 @@ select{
     position: relative;
 }
 
-.alert_dop{
+.alert_dop {
     padding: 5px;
     display: none;
 }
-.divAndBxs_items{
+
+.divAndBxs_items {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
 }
-.bxs_items{
+
+.bxs_items {
     margin: 0px 0px 0px 20px;
     display: flex;
+    flex-wrap: wrap;
 }
-.bxs-trash{
+
+.bxs-trash {
     background-color: rgb(213, 78, 78);
     color: #fff;
     padding: 5px 10px;
@@ -88,7 +94,7 @@ select{
     margin: 0px 0px 0px 5px;
 }
 
-.bx-check{
+.bx-check {
     background-color: rgb(0, 172, 9);
     color: #fff;
     padding: 5px 10px;
@@ -97,7 +103,7 @@ select{
     font-weight: bold;
 }
 
-.bx-time-five{
+.bx-time-five {
     background-color: rgb(209, 214, 55);
     color: #fff;
     padding: 5px 10px;
@@ -106,8 +112,13 @@ select{
     font-weight: bold;
     margin: 0px 0px 0px 5px;
 }
-
-.alert:hover .bxs_items{
-    display: block;
+.btn_save_change{
+    margin: 0px 5px 0px 0px;
+    padding: 4px 9px;
+    float: right;
+    display: none;
 }
 
+.alert:hover .bxs_items {
+    display: block;
+}
