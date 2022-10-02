@@ -41,6 +41,7 @@ select,
     padding: 5px 10px;
     border-radius: 5px;
     z-index: 10;
+    cursor: pointer;
 }
 
 .alert {
@@ -51,6 +52,7 @@ select,
     background-color: #dff0d8;
     margin: 10px 0px 0px 0px;
     position: relative;
+    cursor: move;
 }
 .bxs_items{
     position: absolute;
@@ -67,6 +69,8 @@ select,
     z-index: 10;
     font-weight: bold;
     margin: 0px 0px 0px 5px;
+    cursor: pointer;
+
 }
 
 .bx-check{
@@ -76,8 +80,14 @@ select,
     border-radius: 5px;
     z-index: 10;
     font-weight: bold;
+    cursor: pointer;
+
 }
 
 .alert:hover .bxs_items{
     display: block;
+}
+
+.selected {
+    opacity: 0.6;
 }
