@@ -13,6 +13,9 @@ const btn_check = document.getElementsByClassName("bx-check");
 const btn_trash = document.querySelector(".bxs_trash");
 const btn_time = document.querySelector(".bx-time-five");
 
+let tasksListElement = document.querySelector(`.tasks__list`);
+
+
 document.addEventListener('keyup', function (e) {
     if (e.keyCode == 13) {
         btn_add.click();
@@ -55,6 +58,7 @@ function createTask(task, task_dop) {
     div.className = "alert";
     div.contentEditable = "true";
     div_out.className = "alert_out";
+    div_out.draggable = true;
     div_dop.className = 'alert_dop';
     div_dop.contentEditable = "true";
 
@@ -175,57 +179,12 @@ document.addEventListener("click", (e) => {
 btn_save_change.addEventListener("click", () => {
     btn_save_change.style.display = "none";
 
-
 });
-
-
-// function foundTaskInLocalStorage(task) {
-//     if (localStorage.getItem("active_tasks") != null) {
-//         let tasks_active = Array.from(JSON.parse(localStorage.getItem("active_tasks")));
-//         tasks_active.forEach(element => {
-//             if (element == task) {
-//                 const task_shange = element;
-//                 console.log(element, "tasks_active")
-//                 return task_shange;
-//             }
-//         });
-//     }
-//     if (localStorage.getItem("delete_tasks") != null) {
-//         let tasks_delete = Array.from(JSON.parse(localStorage.getItem("delete_tasks")));
-//         tasks_delete.forEach(element => {
-//             if (element == task) {
-//                 const task_shange = element;
-//                 console.log(element, "tasks_delete")
-//                 return task_shange;
-//             }
-//         });
-//     }
-//     if (localStorage.getItem("completed_tasks") != null) {
-//         let tasks_completed = Array.from(JSON.parse(localStorage.getItem("completed_tasks")));
-//         tasks_completed.forEach(element => {
-//             if (element == task) {
-//                 const task_shange = element;
-//                 console.log(element, "tasks_completed")
-//                 return task_shange;
-//             }
-//         });
-//     }
-//     if (localStorage.getItem("delayed_tasks") != null) {
-//         let tasks_delayed = Array.from(JSON.parse(localStorage.getItem("delayed_tasks")));
-//         tasks_delayed.forEach(element => {
-//             if (element == task) {
-//                 const task_shange = element;
-//                 console.log(element, "tasks_delayed")
-//                 return task_shange;
-//             }
-//         });
-//     }
-// }
 
 
 function changeSelect() {
     const select = document.getElementById('select');
-    value = select.options[select.selectedIndex].value;
+    const value = select.options[select.selectedIndex].value;
     const btn_trash_all = document.getElementsByClassName("bxs-trash");
     const btn_time_all = document.getElementsByClassName("bx-time-five");
     const btn_check_all = document.getElementsByClassName("bx-check");
@@ -236,6 +195,13 @@ function changeSelect() {
             items_completed.style.display = "none";
             items_delete.style.display = "none";
             items_delayed.style.display = "none";
+
+            items_active.classList.add("tasks__list");
+            items_completed.classList.remove("tasks__list");
+            items_delete.classList.remove("tasks__list");
+            items_delayed.classList.remove("tasks__list");
+
+            
 
             for (let i = 0; i < btn_check_all.length; i++) {
                 btn_trash_all[i].style.display = "block";
@@ -250,7 +216,11 @@ function changeSelect() {
             items_completed.style.display = "block"
             items_delete.style.display = "none";
             items_delayed.style.display = "none";
-            btn_check.disabled = true;
+
+            items_completed.classList.add("tasks__list");
+            items_active.classList.remove("tasks__list");
+            items_delete.classList.remove("tasks__list");
+            items_delayed.classList.remove("tasks__list");
 
             for (let i = 0; i < btn_check_all.length; i++) {
                 btn_trash_all[i].style.display = "block";
@@ -266,6 +236,12 @@ function changeSelect() {
             items_delete.style.display = "block";
             items_delayed.style.display = "none";
 
+            items_delete.classList.add("tasks__list");
+            items_active.classList.remove("tasks__list");
+            items_completed.classList.remove("tasks__list");
+            items_delayed.classList.remove("tasks__list");
+
+
             for (let i = 0; i < btn_trash_all.length; i++) {
                 btn_trash_all[i].style.display = "none";
                 btn_time_all[i].style.display = "none";
@@ -279,6 +255,11 @@ function changeSelect() {
             items_completed.style.display = "none";
             items_delete.style.display = "none";
             items_delayed.style.display = "block";
+
+            items_delayed.classList.add("tasks__list");
+            items_active.classList.remove("tasks__list");
+            items_completed.classList.remove("tasks__list");
+            items_delete.classList.remove("tasks__list");
 
             for (let i = 0; i < btn_time_all.length; i++) {
                 btn_time_all[i].style.display = "none";
@@ -327,3 +308,50 @@ function loadTasks() {
     }
     else return;
 }
+
+
+
+
+tasksListElement.addEventListener(`dragstart`, (evt) => {
+    evt.target.classList.add(`selected`);
+});
+
+tasksListElement.addEventListener(`dragend`, (evt) => {
+    evt.target.classList.remove(`selected`);
+});
+
+const getNextElement = (cursorPosition, currentElement) => {
+    const currentElementCoord = currentElement.getBoundingClientRect();
+    const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
+
+    const nextElement = (cursorPosition < currentElementCenter) ?
+        currentElement :
+        currentElement.nextElementSibling;
+
+    return nextElement;
+};
+
+tasksListElement.addEventListener(`dragover`, (evt) => {
+    evt.preventDefault();
+
+    const activeElement = tasksListElement.querySelector(`.selected`);
+    const currentElement = evt.target;
+    const isMoveable = activeElement !== currentElement &&
+        currentElement.classList.contains(`alert_out`);
+
+    if (!isMoveable) {
+        return;
+    }
+
+    const nextElement = getNextElement(evt.clientY, currentElement);
+
+    if (
+        nextElement &&
+        activeElement === nextElement.previousElementSibling ||
+        activeElement === nextElement
+    ) {
+        return;
+    }
+
+    tasksListElement.insertBefore(activeElement, nextElement);
+});

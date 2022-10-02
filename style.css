@@ -60,11 +60,13 @@ select {
     background-color: #dff0d8;
     margin: 10px 0px 0px 0px;
     position: relative;
+    cursor: move;
 }
 
 .alert {
     padding: 5px;
     position: relative;
+    
 }
 
 .alert_dop {
@@ -92,6 +94,7 @@ select {
     z-index: 10;
     font-weight: bold;
     margin: 0px 0px 0px 5px;
+    cursor: pointer;
 }
 
 .bx-check {
@@ -101,6 +104,8 @@ select {
     border-radius: 5px;
     z-index: 10;
     font-weight: bold;
+    cursor: pointer;
+
 }
 
 .bx-time-five {
@@ -111,6 +116,8 @@ select {
     z-index: 10;
     font-weight: bold;
     margin: 0px 0px 0px 5px;
+    cursor: pointer;
+
 }
 .btn_save_change{
     margin: 0px 5px 0px 0px;
@@ -121,4 +128,8 @@ select {
 
 .alert:hover .bxs_items {
     display: block;
+}
+
+.selected{
+    opacity: 0.6;
 }
