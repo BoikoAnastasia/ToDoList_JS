@@ -56,7 +56,7 @@ function createTask(task, task_dop) {
     div.contentEditable = "true";
     div_out.className = "alert_out";
     div_dop.className = 'alert_dop';
-    // div_dop.contentEditable = "true";
+    div_dop.contentEditable = "true";
 
     divAndBxs_items.className = "divAndBxs_items";
 
@@ -160,6 +160,7 @@ document.addEventListener("click", (e) => {
     }
     // появление и исчезание дополнительной задачи
     if (target.classList.contains("bxs-down-arrow")) {
+        document.querySelector(".alert_dop").contentEditable = "true";
         target.nextSibling.style.display != "block" ? target.nextSibling.style.display = "block"
             : target.nextSibling.style.display = "none";
     }
@@ -168,10 +169,7 @@ document.addEventListener("click", (e) => {
         task = target.textContent;
         btn_save_change.style.display = "block";
     }
-    else {
-        target.contentEditable = "false";
 
-    }
 });
 
 btn_save_change.addEventListener("click", () => {
@@ -231,14 +229,14 @@ function changeSelect() {
     const btn_trash_all = document.getElementsByClassName("bxs-trash");
     const btn_time_all = document.getElementsByClassName("bx-time-five");
     const btn_check_all = document.getElementsByClassName("bx-check");
-    
+
     switch (value) {
         case "active": {
             items_active.style.display = "block";
             items_completed.style.display = "none";
             items_delete.style.display = "none";
             items_delayed.style.display = "none";
-            
+
             for (let i = 0; i < btn_check_all.length; i++) {
                 btn_trash_all[i].style.display = "block";
                 btn_check_all[i].style.display = "block";
