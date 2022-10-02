@@ -19,7 +19,6 @@ let tasksListElement = document.querySelector(`.tasks__list`);
 document.addEventListener('keyup', function (e) {
     if (e.keyCode == 13) {
         btn_add.click();
-
     }
 });
 
@@ -309,9 +308,7 @@ function loadTasks() {
     else return;
 }
 
-
-
-
+// перетаскивание task
 tasksListElement.addEventListener(`dragstart`, (evt) => {
     evt.target.classList.add(`selected`);
 });
