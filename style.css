@@ -60,7 +60,7 @@ select {
     background-color: #dff0d8;
     margin: 10px 0px 0px 0px;
     position: relative;
-    cursor: move;
+    /* cursor: move; */
 }
 
 .alert {

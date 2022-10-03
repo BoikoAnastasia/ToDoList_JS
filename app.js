@@ -27,17 +27,25 @@ btn_add.addEventListener("click", () => {
     let task_dop = document.querySelector(".input_dop_task").value;
     if (task == "" || task == " ") { return }
     else {
-        items_active.append(createTask(task, task_dop));
+        items_active.append(createTask(task, task_dop, dateFunc()));
         localStorage.setItem("active_tasks", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("active_tasks") || "[]"), task])
-        );
-        localStorage.setItem("active_tasks_dop", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("active_tasks_dop") || "[]"), task_dop])
+            [...JSON.parse(localStorage.getItem("active_tasks") || "[]"), { 'active_task': task, index: Date.now(), task_dop: task_dop, date: dateFunc()}])
         );
     }
 });
 
-function createTask(task, task_dop) {
+const dateFunc = function getDate() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    const formattedToday = dd + '/' + mm + '/' + yyyy;
+    return formattedToday;
+}
+
+function createTask(task, task_dop, date) {
     let div_out = document.createElement("div");
     let div = document.createElement('div');
     let div_dop = document.createElement('div');
@@ -64,7 +72,7 @@ function createTask(task, task_dop) {
     divAndBxs_items.className = "divAndBxs_items";
 
     div_dop.textContent = task_dop
-    div.textContent = task;
+    div.textContent = task + " " + date;
 
     bxs_items.append(bx_check, bx_time_five, bxs_trash)
     divAndBxs_items.append(div, bxs_items)
@@ -83,23 +91,13 @@ document.addEventListener("click", (e) => {
         let task_delete_dop = target.parentNode.parentNode.nextSibling.nextSibling.textContent;
         // добавление данных в localStorage списка удаленных
         localStorage.setItem("delete_tasks", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("delete_tasks") || "[]"), task_delete])
-        );
-        // добавление дополнение задачи в localStorage списка удаленных
-        localStorage.setItem("delete_tasks_dop", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("delete_tasks_dop") || "[]"), task_delete_dop])
+            [...JSON.parse(localStorage.getItem("delete_tasks") || "[]"), {"delete_task": task_delete, index: Date.now(), task_dop: task_delete_dop, date: dateFunc()}])
         );
         // удаление из localStorage значения, которое переносится на лист удаленных
         const getLocalStorage = JSON.parse(localStorage.getItem("active_tasks"));
         const index = getLocalStorage.findIndex(user => user == task_delete);
         getLocalStorage.splice(index, 1);
         localStorage.setItem('active_tasks', JSON.stringify(getLocalStorage));
-
-        // удаление дополнительного описания задачи из localStorage значения, которое переносится на лист удаленных
-        const getDopLocalStorage = JSON.parse(localStorage.getItem("active_tasks_dop"));
-        const index_dop = getDopLocalStorage.findIndex(user => user == task_delete_dop);
-        getDopLocalStorage.splice(index_dop, 1);
-        localStorage.setItem('active_tasks_dop', JSON.stringify(getDopLocalStorage));
 
         //добавление задачи в удаленные
         items_delete.append(target.parentNode.parentNode.parentNode)
@@ -111,28 +109,16 @@ document.addEventListener("click", (e) => {
         let task_completed_dop = target.parentNode.parentNode.nextSibling.nextSibling.textContent;
         // добавление данных в localStorage списка выполненных
         localStorage.setItem("completed_tasks", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("completed_tasks") || "[]"), task_completed])
+            [...JSON.parse(localStorage.getItem("completed_tasks") || "[]"), {"completed_tasks": task_completed, index: Date.now(), task_dop: task_completed_dop, date: dateFunc()}])
         );
-        // // добавление дополнительнения задачи в localStorage списка выполненных 
-        localStorage.setItem("completed_tasks_dop", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("completed_tasks_dop") || "[]"), task_completed_dop])
-        );
-
+       
         // удаление из localStorage значения, которое переносится на лист выполненных
         const getLocalStorage = JSON.parse(localStorage.getItem("active_tasks"));
         const index = getLocalStorage.findIndex(user => user == task_completed);
         getLocalStorage.splice(index, 1);
         localStorage.setItem('active_tasks', JSON.stringify(getLocalStorage));
 
-        // удаление дополнительного описания задачи из localStorage значения, которое переносится на лист удаленных
-        const getDopLocalStorage = JSON.parse(localStorage.getItem("active_tasks_dop"));
-        const index_dop = getDopLocalStorage.findIndex(user => user == task_completed_dop);
-        getDopLocalStorage.splice(index_dop, 1);
-        localStorage.setItem('active_tasks_dop', JSON.stringify(getDopLocalStorage));
-
         items_completed.append(target.parentNode.parentNode.parentNode)
-
-        // target.remove()
     }
     // поиск клика на кнопке отложенные
     if (target.classList.contains("bx-time-five")) {
@@ -140,23 +126,14 @@ document.addEventListener("click", (e) => {
         let tasks_delayed_dop = target.parentNode.parentNode.nextSibling.nextSibling.textContent;
         // добавление данных в localStorage списка отложенные
         localStorage.setItem("delayed_tasks", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("delayed_tasks") || "[]"), tasks_delayed])
+            [...JSON.parse(localStorage.getItem("delayed_tasks") || "[]"), {"delayed_tasks": tasks_delayed, index: Date.now(), task_dop: tasks_delayed_dop, date: dateFunc()}])
         );
-        // // добавление дополнительнения задачи в localStorage списка отложенные 
-        localStorage.setItem("delayed_tasks_dop", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("delayed_tasks_dop") || "[]"), tasks_delayed_dop])
-        );
+
         // удаление из localStorage значения, которое переносится на лист отложенные
         const getLocalStorage = JSON.parse(localStorage.getItem("active_tasks"));
         const index = getLocalStorage.findIndex(user => user == tasks_delayed);
         getLocalStorage.splice(index, 1);
         localStorage.setItem('active_tasks', JSON.stringify(getLocalStorage));
-
-        // удаление дополнительного описания задачи из localStorage значения, которое переносится на лист удаленных
-        const getDopLocalStorage = JSON.parse(localStorage.getItem("active_tasks_dop"));
-        const index_dop = getDopLocalStorage.findIndex(user => user == tasks_delayed_dop);
-        getDopLocalStorage.splice(index_dop, 1);
-        localStorage.setItem('active_tasks_dop', JSON.stringify(getDopLocalStorage));
 
         items_delayed.append(target.parentNode.parentNode.parentNode)
         // target.parentNode.remove()
@@ -180,7 +157,6 @@ btn_save_change.addEventListener("click", () => {
 
 });
 
-
 function changeSelect() {
     const select = document.getElementById('select');
     const value = select.options[select.selectedIndex].value;
@@ -200,7 +176,7 @@ function changeSelect() {
             items_delete.classList.remove("tasks__list");
             items_delayed.classList.remove("tasks__list");
 
-            
+
 
             for (let i = 0; i < btn_check_all.length; i++) {
                 btn_trash_all[i].style.display = "block";
@@ -274,35 +250,31 @@ function loadTasks() {
     if (localStorage.getItem("active_tasks") != null) {
         // получение данных из локального хранилища
         let tasks_active = Array.from(JSON.parse(localStorage.getItem("active_tasks")));
-        let tasks_active_dop = Array.from(JSON.parse(localStorage.getItem("active_tasks_dop")));
         // передача данных и построение tasks
         for (let i = 0; i < tasks_active.length; i++) {
-            items_active.append(createTask(tasks_active[i], tasks_active_dop[i]));
+            items_active.append(createTask(tasks_active[i].active_task, tasks_active[i].task_dop, tasks_active[i].date));
         }
     }
     if (localStorage.getItem("delete_tasks") != null) {
         // получение данных из локального хранилища
         let tasks_delete = Array.from(JSON.parse(localStorage.getItem("delete_tasks")));
-        let tasks_delete_dop = Array.from(JSON.parse(localStorage.getItem("delete_tasks_dop")));
         // передача данных и построение tasks
         for (let i = 0; i < tasks_delete.length; i++) {
-            items_delete.append(createTask(tasks_delete[i], tasks_delete_dop[i]))
+            items_delete.append(createTask(tasks_delete[i].delete_task,tasks_delete[i].task_dop, tasks_delete[i].date))
         }
     }
     if (localStorage.getItem("completed_tasks") != null) {
         // получение данных из локального хранилища
         let tasks_completed = Array.from(JSON.parse(localStorage.getItem("completed_tasks")));
-        let tasks_completed_dop = Array.from(JSON.parse(localStorage.getItem("completed_tasks_dop")));
         for (let i = 0; i < tasks_completed.length; i++) {
-            items_completed.append(createTask(tasks_completed[i], tasks_completed_dop[i]))
+            items_completed.append(createTask(tasks_completed[i].completed_tasks, tasks_completed[i].task_dop,tasks_completed[i].date))
         }
     }
     if (localStorage.getItem("delayed_tasks") != null) {
         // получение данных из локального хранилища
         let tasks_delayed = Array.from(JSON.parse(localStorage.getItem("delayed_tasks")));
-        let tasks_delayed_dop = Array.from(JSON.parse(localStorage.getItem("delayed_tasks_dop")));
         for (let i = 0; i < tasks_delayed.length; i++) {
-            items_delayed.append(createTask(tasks_delayed[i], tasks_delayed_dop[i]))
+            items_delayed.append(createTask(tasks_delayed[i].delayed_tasks, tasks_delayed[i].task_dop, tasks_delayed[i].date))
         }
     }
     else return;
