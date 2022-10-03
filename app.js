@@ -22,7 +22,7 @@ btn_add.addEventListener("click", () => {
     else {
         createTask(task);
         localStorage.setItem("active_tasks", JSON.stringify(
-            [...JSON.parse(localStorage.getItem("active_tasks") || "[]"), task])
+            [...JSON.parse(localStorage.getItem("active_tasks") || "[]"), {'active': {task : task, date: Date.now(), dop_date: ''} }])
         );
     }
 });
